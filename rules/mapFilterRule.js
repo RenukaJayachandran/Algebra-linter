@@ -21,7 +21,7 @@ var Rule = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     Rule.prototype.apply = function (sourceFile) {
-        return this.applyWithWalker(new FunctorWarning(sourceFile, this.getOptions()));
+        return this.applyWithWalker(new MapFilterReduction(sourceFile, this.getOptions()));
     };
     return Rule;
 }(Lint.Rules.AbstractRule));
@@ -34,15 +34,15 @@ var FunctorReplace = /** @class */ (function (_super) {
     return FunctorReplace;
 }(tslint_1.Replacement));
 // The walker takes care of all the work.
-var FunctorWarning = /** @class */ (function (_super) {
-    __extends(FunctorWarning, _super);
-    function FunctorWarning() {
+var MapFilterReduction = /** @class */ (function (_super) {
+    __extends(MapFilterReduction, _super);
+    function MapFilterReduction() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    FunctorWarning.prototype.visitPropertyAccessExpression = function (n) {
-        if (n.name.text === 'map' && n.expression.expression.name.text === 'map') {
-            this.addFailureAtNode(n, 'Use composition instead', new FunctorReplace(n.name.pos, -10, 'Test string'));
+    MapFilterReduction.prototype.visitPropertyAccessExpression = function (n) {
+        if (n.name.text === 'filter' && n.expression.expression.name.text === 'map') {
+            this.addFailureAtNode(n, 'Make sure you apply filter before map for performance', new FunctorReplace(n.name.pos, -10, 'Test string'));
         }
     };
-    return FunctorWarning;
+    return MapFilterReduction;
 }(Lint.RuleWalker));
