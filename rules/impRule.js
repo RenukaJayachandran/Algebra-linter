@@ -41,7 +41,12 @@ var FunctorWarning = /** @class */ (function (_super) {
     }
     FunctorWarning.prototype.visitPropertyAccessExpression = function (n) {
         if (n.name.text === 'map' && n.expression.expression.name.text === 'map') {
-            this.addFailureAtNode(n, 'Use composition instead', new FunctorReplace(n.name.pos, -10, 'Test string'));
+            var f1 = '(' + n.expression.arguments[0].body.getText() + ')';
+            var f2 = n.parent.arguments[0].body.getText();
+            var start = n.expression.arguments[0].body.pos + 1;
+            var width = n.parent.end - start - 1;
+            var f3 = f2.replace('x', f1);
+            this.addFailureAtNode(n, 'Use composition instead', new FunctorReplace(start, width, f3));
         }
     };
     return FunctorWarning;
