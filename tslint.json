@@ -1,0 +1,12 @@
+{
+    "allowJs": true,
+    "jsRules": {
+        "no-empty": true
+    },
+    "rulesDirectory": "./rules",
+    "rules": {
+        "imp": true,
+        "mapFilter": false,
+        "fetch": true
+    }
+}
