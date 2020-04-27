@@ -40,14 +40,13 @@ var FunctorWarning = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     FunctorWarning.prototype.visitPropertyAccessExpression = function (n) {
-        //console.log('inside functor', n.getText())
         if (n.name.text === 'map' && n.expression.expression.name.text === 'map') {
             var f1 = '(' + n.expression.arguments[0].body.getText() + ')';
             var f2 = n.parent.arguments[0].body.getText();
-            var f3 = f2.replace('x', f1);
             var start = n.expression.arguments[0].body.pos + 1;
             var width = n.parent.end - start - 1;
-            this.addFailureAtNode(n, 'Use composition instead ', new FunctorReplace(start, width, f3));
+            var f3 = f2.replace('x', f1);
+            this.addFailureAtNode(n, 'Use composition instead', new FunctorReplace(start, width, f3));
         }
     };
     return FunctorWarning;
